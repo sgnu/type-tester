@@ -1,14 +1,13 @@
 import React from 'react';
-import './Typer.css'
-
-const textVar = "The quick brown fox jumps over the lazy brown dog.";
+import './Typer.css';
+import TypingTests from './TypingTests'
 
 class Typer extends React.Component {
 	render() {
 		return (
 			<div className="Typer">
 				<h1>Type Tester</h1>
-				<TyperTextArea typeText={textVar} />
+				<TyperTextArea />
 			</div>
 		)
 	}
@@ -23,19 +22,46 @@ class TyperTextArea extends React.Component {
 		this.state = {
 			active: false,
 			background: "#ffffff24",
+			cpm: 0,
+			curTime: 0,
 			incorrectness: false,
+			startTime: 0,
+			text: "",
 			value: ""
 		};
 	}
 
+	getTest() {
+		let str = TypingTests[Math.round(Math.random() * TypingTests.length)];
+		this.setState({
+			text: str
+		});
+	}
+
+	componentDidMount() {
+		this.getTest();
+	}
+
 	handleChange(e) {
 		if (!this.state.active) {
-			this.setState({ active: true });
+			this.setState({
+				active: true,
+				startTime: new Date()
+			});
+			this.interval = setInterval(() => this.updateTime(), 100);
 		}
-		this.setState({
-			value: e.target.value
-		});
-		this.checkinCorrectness(e.target.value);
+		this.setState({ value: e.target.value });
+
+		if (e.target.value === this.state.text) {
+			clearInterval(this.interval);
+			this.setState({
+				active: false,
+				value: ""
+			});
+		} else {
+			this.updateTime();
+			this.checkIncorrectness(e.target.value);
+		}
 	}
 
 	handleKeyDown(e) {
@@ -44,9 +70,9 @@ class TyperTextArea extends React.Component {
 		}
 	}
 
-	checkinCorrectness(inputText) {
+	checkIncorrectness(inputText) {
 		this.setState({
-			background: (this.props.typeText.substring(0, inputText.length) == inputText) ? "#ffffff24" : "red"
+			background: (this.state.text.substring(0, inputText.length) === inputText) ? "#ffffff24" : "red"
 		});
 	}
 
@@ -58,10 +84,19 @@ class TyperTextArea extends React.Component {
 		}
 	}
 
+	updateTime() {
+		this.setState({ curTime: new Date()});
+		let str = this.state.value.replace(/\s/g, '');
+		this.setState({cpm: (Math.round(str.length / ((this.state.curTime - this.state.startTime) / (1000 * 60))))});
+	}
+
 	render() {
 		return (
 			<div className="TyperTextArea">
-				<p className="textToType">{this.props.typeText}</p>
+				<p className="textToType">{this.state.text}</p>
+
+				<p className="stats">Time: {((this.state.curTime - this.state.startTime) / 1000).toFixed(2)} sec | CPM: {this.state.cpm}</p>
+
 				<textarea autoFocus
 					placeholder="Type text here"
 					className="userInput"
