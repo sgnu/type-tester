@@ -106,8 +106,15 @@ class TyperTextArea extends React.Component {
 			<div className="TyperTextArea">
 				<div className="pangramButton"
 				onClick={() => {
-					this.setState({pangrams: !this.state.pangrams});
-					this.getTest();
+					const pangramState = this.state.pangrams;
+					this.setState({
+						active: false,
+						curTime: 0,
+						pangrams: !pangramState,
+						startTime: 0,
+						value: ""
+					});
+					setTimeout(() => {this.getTest()}, 50);
 				}}>{(this.state.pangrams) ? "Pangrams" : "Quotes"}</div>
 				<p className="textToType">{this.state.text}</p>
 
@@ -116,10 +123,11 @@ class TyperTextArea extends React.Component {
 				<textarea autoFocus
 					placeholder="Type text here"
 					className="userInput"
-					style={{ background: this.state.background }}
+					style={{ borderColor: this.state.background }}
 					onKeyDown={this.handleKeyDown}
 					onChange={this.handleChange}
 				>
+				{this.state.value}
 				</textarea>
 			</div>
 		)

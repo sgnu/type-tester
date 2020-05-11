@@ -23,7 +23,8 @@
 }
 
 .Typer .userInput {
-	border: none;
+	background: none;
+	border: 2px solid;
 
 	color: #ffffff;
 
