@@ -25,6 +25,7 @@ class TyperTextArea extends React.Component {
 			cpm: 0,
 			curTime: 0,
 			incorrectness: false,
+			pangrams: false,
 			startTime: 0,
 			text: "",
 			value: ""
@@ -34,7 +35,11 @@ class TyperTextArea extends React.Component {
 	getTest() {
 		let str = "";
 		do {
-			str = TypingTests[Math.floor(Math.random() * TypingTests.length)];
+			if (this.state.pangrams) {
+				str = TypingTests.pangrams[Math.floor(Math.random() * TypingTests.pangrams.length)];
+			} else {
+				str = TypingTests.quotes[Math.floor(Math.random() * TypingTests.quotes.length)];
+			}
 		} while (str === this.state.text)
 
 		this.setState({
@@ -99,9 +104,14 @@ class TyperTextArea extends React.Component {
 	render() {
 		return (
 			<div className="TyperTextArea">
+				<div className="pangramButton"
+				onClick={() => {
+					this.setState({pangrams: !this.state.pangrams});
+					this.getTest();
+				}}>{(this.state.pangrams) ? "Pangrams" : "Quotes"}</div>
 				<p className="textToType">{this.state.text}</p>
 
-				<p className="stats">Time: {((this.state.curTime - this.state.startTime) / 1000).toFixed(2)} sec | CPM: {this.state.cpm}</p>
+				<p className="stats">Time: {((this.state.curTime - this.state.startTime) / 1000).toFixed(2)} sec | CPM: {this.state.cpm} | WPM: {this.state.cpm / 5}</p>
 
 				<textarea autoFocus
 					placeholder="Type text here"
@@ -111,6 +121,20 @@ class TyperTextArea extends React.Component {
 					onChange={this.handleChange}
 				>
 				</textarea>
+			</div>
+		)
+	}
+}
+
+class PangramSwitcher extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<div className="PangramSwitcher">
+				<p>Pangrams</p>
 			</div>
 		)
 	}
