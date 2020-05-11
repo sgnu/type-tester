@@ -62,6 +62,8 @@ class TyperTextArea extends React.Component {
 				active: false,
 				value: ""
 			});
+			this.getTest();
+			e.target.value = "";
 		} else {
 			this.updateTime();
 			this.checkIncorrectness(e.target.value);
