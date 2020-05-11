@@ -32,7 +32,11 @@ class TyperTextArea extends React.Component {
 	}
 
 	getTest() {
-		let str = TypingTests[Math.round(Math.random() * TypingTests.length)];
+		let str = "";
+		do {
+			str = TypingTests[Math.floor(Math.random() * TypingTests.length)];
+		} while (str === this.state.text)
+
 		this.setState({
 			text: str
 		});
