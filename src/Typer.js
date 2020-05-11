@@ -21,6 +21,7 @@ class TyperTextArea extends React.Component {
 
 		this.state = {
 			active: false,
+			author: "",
 			background: "#ffffff24",
 			cpm: 0,
 			curTime: 0,
@@ -33,17 +34,19 @@ class TyperTextArea extends React.Component {
 	}
 
 	getTest() {
-		let str = "";
+		let obj = {};
 		do {
 			if (this.state.pangrams) {
-				str = TypingTests.pangrams[Math.floor(Math.random() * TypingTests.pangrams.length)];
+				obj.author = "Anonymous"
+				obj.text = TypingTests.pangrams[Math.floor(Math.random() * TypingTests.pangrams.length)];
 			} else {
-				str = TypingTests.quotes[Math.floor(Math.random() * TypingTests.quotes.length)];
+				obj = TypingTests.quotes[Math.floor(Math.random() * TypingTests.quotes.length)];
 			}
-		} while (str === this.state.text)
+		} while (obj.text === this.state.text)
 
 		this.setState({
-			text: str
+			author: obj.author,
+			text: obj.text
 		});
 	}
 
@@ -114,13 +117,21 @@ class TyperTextArea extends React.Component {
 						startTime: 0,
 						value: ""
 					});
+					clearInterval(this.interval);
 					setTimeout(() => {this.getTest()}, 50);
-				}}>{(this.state.pangrams) ? "Pangrams" : "Quotes"}</div>
-				<p className="textToType">{this.state.text}</p>
+				}}>Select: {(this.state.pangrams) ? "Pangrams" : "Quotes"}</div>
+
+				<textarea
+				readOnly
+				className="textToType"
+				value={this.state.text}></textarea>
+
+				<p className="author">- {this.state.author}</p>
 
 				<p className="stats">Time: {((this.state.curTime - this.state.startTime) / 1000).toFixed(2)} sec | CPM: {this.state.cpm} | WPM: {this.state.cpm / 5}</p>
 
-				<textarea autoFocus
+				<textarea
+					autoFocus
 					placeholder="Type text here"
 					className="userInput"
 					style={{ borderColor: this.state.background }}
