@@ -68,6 +68,7 @@ class TyperTextArea extends React.Component {
 			clearInterval(this.interval);
 			this.setState({
 				active: false,
+				background: "green",
 				value: ""
 			});
 			this.getTest();
