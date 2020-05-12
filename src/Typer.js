@@ -146,18 +146,4 @@ class TyperTextArea extends React.Component {
 	}
 }
 
-class PangramSwitcher extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
-			<div className="PangramSwitcher">
-				<p>Pangrams</p>
-			</div>
-		)
-	}
-}
-
 export default Typer;
