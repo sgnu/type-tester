@@ -29,6 +29,18 @@ const TypingTests = {
 		{
 			text: "All the great things are simple, and many can be expressed in a single word: freedom, justice, honor, duty, mercy, hope.",
 			author: "Winston Churchill"
+		},
+		{
+			text: "Some are born great, some achieve greatness, and some have greatness thrust upon them.",
+			author: "William Shakespeare"
+		},
+		{
+			text: "It is the nature of all greatness not to be exact.",
+			author: "Edmund Burke"
+		},
+		{
+			text: "Cowards die many times before their deaths; the valiant never taste of death but once.",
+			author: "William Shakespeare"
 		}
 	]
 }
